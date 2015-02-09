@@ -48,109 +48,122 @@ standard output or to a file specified on the command line. Your goal is
 to write a program `file_disemvowel` that can be called in all of the
 following ways:
 
-**Read from standard input, write to standard output** <span
-class="twiki-macro CODE">bash</span> \> file_disemvowel Some text
-consisting of 3 lines. \^D Sm txt cnsstng f 3 lns. \> <span
-class="twiki-macro ENDCODE"></span>
+### Read from standard input, write to standard output
+
+```bash
+> ./file_disemvowel
+Some text
+consisting of 2 lines. \
+^D
+Sm txt 
+cnsstng f 2 lns.
+```
 
 Note that we can also use I/O redirection and pipes to modify standard
 input and standard output:
 
-    > cat small_input
-    Vulcan once stood proud here,
-    until he spewed his parts from his dirty mouth,
-    shattering his body and the land alike.
-    -- Thomas McPhee, 20 Jul 2010
-    > file_disemvowel < small_input > /tmp/output
-    > cat /tmp/output
-    Vlcn nc std prd hr,
-    ntl h spwd hs prts frm hs drty mth,
-    shttrng hs bdy nd th lnd lk.
-    -- Thms McPh, 20 Jl 2010
+```bash
+> cat small_input
+Vulcan once stood proud here,
+until he spewed his parts from his dirty mouth,
+shattering his body and the land alike.
+-- Thomas McPhee, 20 Jul 2010
+> ./file_disemvowel < small_input > /tmp/output
+> cat /tmp/output
+Vlcn nc std prd hr,
+ntl h spwd hs prts frm hs drty mth,
+shttrng hs bdy nd th lnd lk.
+-- Thms McPh, 20 Jl 2010
+```
 
-**Read from a file, write to standard output**
+### Read from a file, write to standard output
 
 Your program should be able to take a single command line argument that
 is taken to be the name of the file to be disemvoweled. The output will
 then go to standard output.
 
-    > cat small_input
-    Vulcan once stood proud here,
-    until he spewed his parts from his dirty mouth,
-    shattering his body and the land alike.
-    -- Thomas McPhee, 20 Jul 2010
-    > file_disemvowel small_input
-    Vlcn nc std prd hr,
-    ntl h spwd hs prts frm hs drty mth,
-    shttrng hs bdy nd th lnd lk.
-    -- Thms McPh, 20 Jl 2010
+```bash
+> cat small_input
+Vulcan once stood proud here,
+until he spewed his parts from his dirty mouth,
+shattering his body and the land alike.
+-- Thomas McPhee, 20 Jul 2010
+> ./file_disemvowel small_input
+Vlcn nc std prd hr,
+ntl h spwd hs prts frm hs drty mth,
+shttrng hs bdy nd th lnd lk.
+-- Thms McPh, 20 Jl 2010
+```
 
-**Read from a file, write to a file**
+### Read from a file, write to a file
 
 If your program is provided with two command line arguments, it should
 interpret the first as the input file and the second as the file where
 the output should be written.
 
-    > cat small_input
-    Vulcan once stood proud here,
-    until he spewed his parts from his dirty mouth,
-    shattering his body and the land alike.
-    -- Thomas McPhee, 20 Jul 2010
-    > file_disemvowel small_input /tmp/output
-    > cat /tmp/output
-    Vlcn nc std prd hr,
-    ntl h spwd hs prts frm hs drty mth,
-    shttrng hs bdy nd th lnd lk.
-    -- Thms McPh, 20 Jl 2010
+```bash
+> cat small_input
+Vulcan once stood proud here,
+until he spewed his parts from his dirty mouth,
+shattering his body and the land alike.
+-- Thomas McPhee, 20 Jul 2010
+> ./file_disemvowel small_input /tmp/output
+> cat /tmp/output
+Vlcn nc std prd hr,
+ntl h spwd hs prts frm hs drty mth,
+shttrng hs bdy nd th lnd lk.
+-- Thms McPh, 20 Jl 2010
+```
 
-**Test scripts and design suggestions**
+### Test scripts and design suggestions
 
-The directory `~mcphee/pub/CSci3401/Lab4/file_disemvowel` has a test
-script and some test data. You probably want to start by trying to get
-those tests to pass at a minimum.
+The directory `file_disemvowel` has a test
+script and some test data. You want to start by trying to get
+those tests to pass at a minimum but, as always, we make no guarantees
+that those tests are in any way complete enough to ensure correctness.
 
 The basic structure of our solution is 
 ```C
-#include \<stdio.h\>
+#include <stdio.h>
 
 #define BUF_SIZE 1024
 
-int is_vowel(char c) { /* Returns true if c is a vowel (upper or lower
-case), and false otherwise. */ }
+int is_vowel(char c) { 
+    /* Returns true if c is a vowel (upper or lower case), and false otherwise. */ 
+}
 
 int copy_non_vowels(int num_chars, char* in_buf, char* out_buf) {
-/*
-
--   Copy all the non-vowels from in_buf to out_buf. num_chars
-    indicates how many
--   characters are in in_buf, and this should return the number of
-    non-vowels that
--   that were copied over. */
-
+    /*
+     * Copy all the non-vowels from in_buf to out_buf. num_chars indicates how many
+     * characters are in in_buf, and this should return the number of non-vowels that
+     * that were copied over.
+     */
 }
 
-void disemvowel(FILE* inputFile, FILE* outputFile) { /*
-
--   Copy all the non-vowels from inputFile to outputFile.
--   Create input and output buffers, and use fread() to repeatedly read
--   in a buffer of data, copy the non-vowels to the output buffer, and
--   use fwrite to write that out. */
-
+void disemvowel(FILE* inputFile, FILE* outputFile) { 
+    /*
+     * Copy all the non-vowels from inputFile to outputFile.
+     * Create input and output buffers, and use fread() to repeatedly read
+     * in a buffer of data, copy the non-vowels to the output buffer, and
+     * use fwrite to write that out. 
+     */
 }
 
-int main(int argc, char *argv[]) { FILE *inputFile; FILE *outputFile;
+int main(int argc, char *argv[]) { 
+    FILE *inputFile; 
+    FILE *outputFile;
 
-/* Code that processes the command line arguments and sets up inputFile
-and outputFile */
+    /* Code that processes the command line arguments and sets up inputFile and outputFile */
 
-disemvowel(inputFile, outputFile);
+    disemvowel(inputFile, outputFile);
 
-return 0; }
+    return 0; 
+}
 ```
 
 A few comments:
 
--   I've used `#define` to create a named constant which I used for the
+-   We've used `#define` to create a named constant which I used for the
     size of my two buffers in the function `disemvowel()`.
 -   Rather than using the very low-level I/O tools `open()`, `read()`,
     and `write()`, I'm using the slightly higher level tools `fopen()`,
@@ -159,20 +172,18 @@ A few comments:
     the man pages for `fopen()`, `fread()`, and `fwrite()` for the
     details, and definitely ask questions if you're not sure what's
     going on there.
--   This uses command line arguments in C, which we haven't talked about
-    yet. I'd start by just reading standard input and writing to
+-   This uses command line arguments in C. You probably want to start by
+    just reading standard input and writing to
     standard input, as that allows you to initially ignore the command
-    line arguments and focus on the file operations. If you get that
-    right, you should pass the first of my three tests, and once you've
+    line arguments and focus on the file operations; once you get that
+    right, you should pass the first of the three tests. When that's
     done that you can start worrying about the command line arguments.
     There are lots of on-line resources for handling command line
-    arguments in C (e.g.,
-    <http://en.wikibooks.org/wiki/A_Little_C_Primer/C_Command_Line_Arguments>).
+    arguments in C, e.g., in the wikibook [A Little C Primer](http://en.wikibooks.org/wiki/A_Little_C_Primer/C_Command_Line_Arguments).
 
 ------------------------------------------------------------------------
 
-Summarizing directories
------------------------
+# Summarizing directories
 
 Here's where we'll generate four different solutions to the same
 problem. The problem we're solving in each case is to write a program
