@@ -7,44 +7,41 @@ The primary goal of this lab is to gain some experience with (Unix) (file) syste
 
 ---
 
-Overview
---------
+# Overview
 
 For this lab, you will need to have (or develop) some familiarity with
-concepts of C programming including:
+several C programming concepts, including:
 
 -   Using command line arguments
 -   Using 2-Dimensional arrays
--   Basics of file-system calls (including standard in and standard out
-    (stdin, stdout))
+-   Basics of file-system calls, including standard input (`stdin`) and standard output (`stdout`)
 -   Using `stat()`
 -   Using `struct`
 
+For comparison, we will also see how to use shell commands and Ruby to traverse directories.
+
 To accomplish these goals, you will work on solving two distinct
-problems, both of which are about how we interact with the file system
-from (C) programs. The first is revisiting an old friend, but this time
+problems, both of which illustrate how we interact with the file system
+from (C) programs. The first is revisiting an old friend (`disemvowel` from the C Lab), but this time
 we disemvowel entire files instead of single lines. The second is four
-() different solutions to the problem of summarizing files; two
+different solutions to the problem of summarizing files; two
 solutions will be in C, one in BASH, and one in Ruby.
 
-Getting started
----------------
+# Getting started
 
-Your group should choose a team name and add it to the list of groups
-below. You should then [fork the starter repo on
-Github](https://github.com/UMM-CSci-3401-F13/Lab-4-starter) to get the
-starter code for all four projects.
+You should start by having one member of your team fork this repo to get the
+starter code for all four projects. Then everyone on the team should make sure
+that they can clone that forked repository.
 
 There are two directories in the repository, one for each of the two
-major parts of this lab. I would recommend doing them in the order
+major parts of this lab. We would recommend doing them in the order
 listed below; there's no overwhelming reason that you need to do them in
 any particular order, however, and it would be far better to move on to
 the next one rather than get buried in one and not make any progress.
 
-File disemvowel
----------------
+# File disemvowel
 
-This is an extension of the disemvoweling exercise from earlier. Here
+This is an extension of the disemvoweling exercise from the initial C Lab. Here
 you should write a program that disemvowels an entire file, reading from
 standard input or a file specified on the command line, and writing to
 standard output or to a file specified on the command line. Your goal is
