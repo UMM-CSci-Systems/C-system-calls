@@ -1,4 +1,4 @@
-# Lab-4-starter
+# "Traversing Directories" starter
 
 # Overview
 
