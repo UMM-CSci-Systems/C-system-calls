@@ -126,13 +126,17 @@ The basic structure of our solution is
 #define BUF_SIZE 1024
 
 bool is_vowel(char c) { 
-    /* Returns true if c is a vowel (upper or lower case), and false otherwise. */ 
+    /* 
+     * Returns true if c is a vowel (upper or lower case), and 
+     * false otherwise. 
+     */ 
 }
 
 int copy_non_vowels(int num_chars, char* in_buf, char* out_buf) {
     /*
-     * Copy all the non-vowels from in_buf to out_buf. num_chars indicates how many
-     * characters are in in_buf, and this should return the number of non-vowels that
+     * Copy all the non-vowels from in_buf to out_buf. 
+     * num_chars indicates how many characters are in in_buf, 
+     * and this should return the number of non-vowels that
      * that were copied over.
      */
 }
