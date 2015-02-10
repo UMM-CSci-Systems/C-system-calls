@@ -182,120 +182,145 @@ A few comments:
     arguments in C, e.g., in the wikibook [A Little C Primer](http://en.wikibooks.org/wiki/A_Little_C_Primer/C_Command_Line_Arguments).
 
 ------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 # Summarizing directories
 
 Here's where we'll generate four different solutions to the same
-problem. The problem we're solving in each case is to write a program
+problem, two in C (using different system tools), one in bash, and one
+using Ruby. The problem we're solving in each case is to write a program
 that takes a single command line argument and looks at *every* file and
 directory from there down (in sub-directories, sub-sub-directories,
 etc.) and summarizes how many directories it finds and how many regular
 files (non-directories) it finds. The output should look like:
 
-    Processed all the files from &lt;/home/mcphee/pub/CSci3401/loads_o_files/&gt;.
+    Processed all the files from </home/mcphee/pub/CSci3401/loads_o_files/>.
     There were 1112 directories.
     There were 10002 regular files.
 
 There is a test script in
-`~mcphee/pub/CSci3401/summarize_tree/summarize_tree_test.sh` that will
+`summarize_tree/summarize_tree_test.sh` that will
 only pass when all four programs exist and work using these names:
 
--   summarize_tree
--   summarize_tree_ftw
--   summarize_tree.sh
--   summarize_tree.rb
+-   `summarize_tree`
+-   `summarize_tree_ftw`
+-   `summarize_tree.sh`
+-   `summarize_tree.rb`
 
 The two files `small_dir_sizes` and `large_dir_sizes` in the repo are
 necessary for the tests to pass; you shouldn't remove or change them.
 
 ------------------------------------------------------------------------
 
-### C using stat()
+### C using `stat()`
 
-We'll start with a "traditional" solution using C using the `stat()` and
-`readdir()` library functions. I've given you a substantial stub for
-this in `~mcphee/pub/CSci3401/summarize_tree/summarize_tree.c` which
-I've also included below:
+We'll start with a "traditional" C solution using the `stat()` and
+`readdir()` library functions. We've given you a substantial stub for
+this in `summarize_tree/summarize_tree.c` which
+is also included below:
 
-<span class="twiki-macro CODE" number="1">C</span> #include \<stdio.h\>
-#include \<sys/stat.h\> #include \<stdbool.h\> #include \<stdlib.h\>
-#include \<dirent.h\> #include \<unistd.h\> #include \<string.h\>
+```C
+#include <stdio.h>
+#include <sys/stat.h> 
+#include <stdbool.h> 
+#include <stdlib.h>
+#include <dirent.h> 
+#include <unistd.h>
+#include <string.h>
 
 static int num_dirs, num_regular;
 
-bool is_dir(const char* path) { /*
-
--   Use the stat() function (try "man 2 stat") to determine if the file
--   referenced by path is a directory or not. Call stat, and then use
--   S_ISDIR to see if the file is a directory. Make sure you check the
--   return value from stat in case there is a problem, e.g., maybe the
--   the file doesn't actually exist. */
-
+bool is_dir(const char* path) { 
+    /*
+     * Use the stat() function (try "man 2 stat") to determine if the file
+     * referenced by path is a directory or not. Call stat, and then use
+     * S_ISDIR to see if the file is a directory. Make sure you check the
+     * return value from stat in case there is a problem, e.g., maybe the
+     * the file doesn't actually exist. 
+     */
 }
 
-/* * I needed this because the multiple recursion means there's no way
-to * order them so that the definitions all precede the calls. **/ void
-process_path(const char**);
+/* 
+ * This is necessary this because the multiple recursion means there's no way to 
+ * order them so that all the functions are defined before they're called.
+ */ 
+void process_path(const char**);
 
-void process_directory(const char* path) { /*
-
--   Update the number of directories seen, use opendir() to open the
--   directory, and then use readdir() to loop through the entries
--   and process them. You have to be careful not to process the
--   "." and ".." directory entries, or you'll end up spinning in
--   (infinite) loops. Also make sure you closedir() when you're done. *
--   You'll also want to use chdir() to move into this new directory,
--   with a matching call to chdir() to move back out of it when you're
--   done. */
-
+void process_directory(const char* path) { 
+    /*
+     * Update the number of directories seen, use opendir() to open the
+     * directory, and then use readdir() to loop through the entries
+     * and process them. You have to be careful not to process the
+     * "." and ".." directory entries, or you'll end up spinning in
+     * (infinite) loops. Also make sure you closedir() when you're done. 
+     *
+     * You'll also want to use chdir() to move into this new directory,
+     * with a matching call to chdir() to move back out of it when you're
+     * done. 
+     */
 }
 
-void process_file(const char* path) { /*
-
--   Update the number of regular files. */
-
+void process_file(const char* path) { 
+    /*
+     * Update the number of regular files.
+     */
 }
 
-void process_path(const char* path) { if (is_dir(path)) {
-process_directory(path); } else { process_file(path); } }
+void process_path(const char* path) { 
+    if (is_dir(path)) {
+        process_directory(path); 
+    } else { 
+        process_file(path); 
+    } 
+}
 
-int main (int argc, char *argv[]) { // Ensure an argument was provided.
-if (argc = 2) { printf ("Usage: %s \<path\>\\n", argv[0]); printf ("
-where \<path\> is the file or root of the tree you want to
-summarize.\\n"); return 1; }
+int main (int argc, char *argv[]) { 
+    // Ensure an argument was provided.
+    if (argc = 2) { 
+        printf ("Usage: %s <path>\n", argv[0]); 
+        printf ("       where <path> is the file or root of the tree you want to summarize.\n"); 
+        return 1; 
+    }
 
-num_dirs = 0; num_regular = 0;
+    num_dirs = 0; 
+    num_regular = 0;
 
-process_path(argv[1]);
+    process_path(argv[1]);
 
-printf("Processed all the files from \<%s\>.\\n", argv[1]);
-printf("There were %d directories.\\n", num_dirs); printf("There were
-%d regular files.\\n", num_regular);
+    printf("Processed all the files from <%s>.\n", argv[1]);
+    printf("There were %d directories.\n", num_dirs); 
+    printf("There were %d regular files.\n", num_regular);
 
-return 0; } <span class="twiki-macro ENDCODE"></span>
+    return 0; 
+}
+```
 
 #### Static variables as "fields"
 
 The `static int` declaration on line 9 gives us two semi-global
 variables that are visible to all the functions *in this file*, but
 invisible outside of this file. This gives us something sort of like
-fields in a class, except that you can't make "instances" of this file
+fields in a class in a language like Java, 
+except that you can't make "instances" of this file
 so there are never more than these two integer variables. (This means if
 you tried to use this approach for something like a stack, then you
 couldn't ever have more than one stack.)
 
 #### Calling stat()
 
-In `is_dir()` on line 11, you'll want to use the `stat()` system call
+In `is_dir()`, you'll want to use the `stat()` system call
 (try `man 2 stat`) to get the "status" of the file identified by `path`.
-The signature for `stat()` is <span class="twiki-macro CODE">C</span>
-int stat(const char *path, struct stat *buf); <span
-class="twiki-macro ENDCODE"></span> This is typical of many library
+The signature for `stat()` is 
+```C
+int stat(const char *path, struct stat *buf);
+```
+This is typical of many library
 functions where the "return value" is actually being written into a
 pointer argument (`buf` in this case), and what's returned is an error
-code. If the error code is 0, then `stat` worked fine, and stored the
-results in
-`buf=; if the error code is non-zero then there was a problem (e.g., the file didn't actually exist) and you can't count on =buf`
+code. If the error code is 0, then `stat` worked fine, and its results 
+are stored in
+`buf`; if the error code is non-zero then there was a problem 
+(e.g., the file didn't actually exist) and you can't count on `buf`
 containing any meaningful information. What you get in `buf` is a whole
 bunch of information including the inode number, access and change
 times, etc. (see the `man` page for more). What we care about is the
@@ -304,29 +329,34 @@ pointer (i.e., `*buf`) and then use the dot notation to access the
 field: `(*buf).st_mode`. This syntax is sufficiently awkward (the parens
 are necessary because dot binds more tightly than star), that the
 designers of C provided an alternative syntax for this common case:
-`buf->st_mode`. This field contains all the file permission information,
+`buf->st_mode`. 
+
+This `st_mode` field contains all the file permission information,
 which includes whether it's a directory or not. We could try to extract
 that information from `st_mode` directly, but they've given us a
 `S_ISDIR()` macro that does that work for us. Then the key expression is
-something like <span class="twiki-macro CODE">C</span>
-S_ISDIR(buf-\>st_mode) <span class="twiki-macro ENDCODE"></span> A key
-point about `stat()` is that *doesn't* allocate space for
-`buf=; you're supposed to have done that before you call =stat()`. You
-can do this with `malloc()` like we've done in class, or you can
+something like 
+```C
+S_ISDIR(buf->st_mode)
+```
+An important point about `stat()` is that *doesn't* allocate space for
+`buf`; you're supposed to have done that before you call `stat()`. You
+can do this with `malloc()`, or you can
 actually declare a `struct stat` locally (`struct stat buf`), and pass
 it's address to `stat()` with `&buf`. If you do that, `buf` isn't a
 pointer, so you don't need the arrow notation above and can just use
-<span class="twiki-macro CODE">C</span> S_ISDIR(buf.st_mode) <span
-class="twiki-macro ENDCODE"></span>
+```C
+S_ISDIR(buf.st_mode)
+```
 
 #### Reading directories
 
-In `process_directory` (line 27) you'll need to have a loop that reads
-all the entries in the directory named by the given path, and making
+In `process_directory` you'll need to have a loop that reads
+all the entries in the directory named by the given path, making
 recursive calls to process those sub-paths. The basic approach is to use
 `opendir()` to open the directory, repeatedly call `readdir()` to read
 the next entry from the directory, and then call `closedir()` at the
-end. There are a few semi-tricky bits you need to be careful of:
+end. There are a few bits you need to be careful of:
 
 -   You need use `chdir()` at the start of `process_directory()` to
     actually move into the directory you're processing. You'll then to
