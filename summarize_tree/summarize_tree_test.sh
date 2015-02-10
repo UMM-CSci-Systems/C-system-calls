@@ -66,5 +66,5 @@ testRubyVersionOnLargeDirectory()
     assertTrue "Incorrect output file, try 'diff large_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
 }
 
-# load shunit2
-. ~mcphee/pub/CSci3401/shunit2-2.1.5/src/shell/shunit2
+# load shunit2 and run the tests.
+. ../lib/shunit2
