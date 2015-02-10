@@ -125,7 +125,7 @@ The basic structure of our solution is
 
 #define BUF_SIZE 1024
 
-int is_vowel(char c) { 
+bool is_vowel(char c) { 
     /* Returns true if c is a vowel (upper or lower case), and false otherwise. */ 
 }
 
