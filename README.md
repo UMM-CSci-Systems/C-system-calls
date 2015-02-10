@@ -380,26 +380,32 @@ errors there are less likely.
 
 ------------------------------------------------------------------------
 
-### C using ftw()
+### C using `ftw()`
 
 Having gotten the version with `stat()` to work, we're now going to do
-this again, using a nice library tool called `ftw()` (for file tree
-walk - really). Here you just need to call `ftw()` (which I did straight
+this again, using a nice library tool called `ftw()` (for "file tree
+walk" - really). Here you just need to call `ftw()` (which you can do straight
 from `main()` after checking the command line arguments), and it does
 all the recursive traversal of the file system for you. What you need to
-do is define a function <span class="twiki-macro CODE">C</span> static
-int callback(const char *fpath, const struct stat *sb, int typeflag)
-<span class="twiki-macro ENDCODE"></span> and pass it in as the second
-argument of `ftw()`, something like this: <span
-class="twiki-macro CODE">C</span> static int callback(const
-char *fpath, const struct stat *sb, int typeflag) { // Define stuff
-here }
+do is define a function 
+```C
+static int callback(const char *fpath, const struct stat *sb, int typeflag)
+```
+and pass it in as the second
+argument of `ftw()`, something like this: 
+```C
+static int callback(const char *fpath, const struct stat *sb, int typeflag) { 
+    // Define stuff here 
+}
 
-int main(int argc, char** argv) { // Check arguments and set things up
+int main(int argc, char** argv) { 
+    // Check arguments and set things up
 
-ftw(argv[1], callback, 16);
+    ftw(argv[1], callback, 16);
 
-// Print out the results } <span class="twiki-macro ENDCODE"></span>
+    // Print out the results 
+}
+```
 
 `ftw()` will call your `callback()` function once for every file it
 finds, giving you the opportunity to do whatever you wish with that
