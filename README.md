@@ -1,13 +1,10 @@
-Lab-4-starter
-=============
-
-The starter code and tests for Lab 4: Traversing directories. This includes the starter code and simple shell tests.
-
-The primary goal of this lab is to gain some experience with (Unix) (file) system calls.
-
----
+# Lab-4-starter
 
 # Overview
+
+This repository contains the starter code and tests for the "Traversing directories" lab. 
+The primary goal of this lab is to gain some experience with (Unix) (file) system calls in 
+C, and compare these to using the shell and Ruby.
 
 For this lab, you will need to have (or develop) some familiarity with
 several C programming concepts, including:
@@ -419,8 +416,8 @@ whatever.
 
 ### The shell using find
 
-An alternative to writing this in C is to use the shell like we did in
-the earlier labs. Here I'd use `find` to do the traversal for you (its
+An alternative to writing this in C is to use shell commands. 
+Here we'd recommend using `find` to do the traversal for you (its
 `-type` flag is probably useful), and let `wc` do the counting.
 
 ------------------------------------------------------------------------
@@ -435,25 +432,18 @@ directory or not.
 
 The following little script, for example, will print out all the
 executable files in or below a specified directory:
+```ruby
+#!/usr/bin/ruby
 
-    #!/usr/bin/ruby
+require 'find'
 
-    require 'find'
+Find.find(ARGV[0]) do |path|
+  if FileTest.executable?(path)
+    puts path
+  end
+end
+```
 
-    Find.find(ARGV[0]) do |path|
-      if FileTest.executable?(path)
-        puts path
-      end
-    end
+---
 
-------------------------------------------------------------------------
-
-Groups
-------
-
-:bangbang: Remember to add your team name to
-the group list so we can find your code. You'll lose points if you
-don't.
-
--- Main.NicMcPhee - 26 Sep 2011\<br\> -- Main.VincentBorchardt - 21 Jun
-2012\<br\> -- Main.JohnMcCall - 16 Sep 2013
+People who contributed to this lab write-up before it was moved to Github include Nic McPhee, Vincent Borchardt, and John McCall.
