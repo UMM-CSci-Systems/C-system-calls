@@ -238,6 +238,11 @@ bool is_dir(const char* path) {
      * S_ISDIR to see if the file is a directory. Make sure you check the
      * return value from stat in case there is a problem, e.g., maybe the
      * the file doesn't actually exist. 
+     *
+     * You'll need to allocate memory for a buffer you pass to stat(); make
+     * sure you free up that space before you return from this function or
+     * you'll have a substantial memory leak (think of how many times this
+     * will be called!).
      */
 }
 
