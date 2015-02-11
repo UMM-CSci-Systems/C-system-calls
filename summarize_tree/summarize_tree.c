@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <string.h>
 
+extern int errno;
+
 static int num_dirs, num_regular;
 
 bool is_dir(const char* path) {
@@ -16,6 +18,23 @@ bool is_dir(const char* path) {
    * return value from stat in case there is a problem, e.g., maybe the
    * the file doesn't actually exist.
    */
+  struct stat *stat_buf = malloc(sizeof(struct stat));
+  int return_code = stat(path, stat_buf);
+  if (return_code != 0) {
+    printf("Couldn't stat <%s>.\n", path);
+    printf("Error code = %d.\n", errno);
+    exit(errno);
+  }
+  
+  bool result = S_ISDIR(stat_buf->st_mode);
+  
+  free(stat_buf);
+  
+  return result;
+}
+
+bool not_dot_file(char* name) {
+  return !(strcmp(name, ".") == 0 || strcmp(name, "..") == 0);
 }
 
 /* 
@@ -36,12 +55,35 @@ void process_directory(const char* path) {
    * with a matching call to chdir() to move back out of it when you're
    * done.
    */
+  ++num_dirs;
+  
+  int return_code = chdir(path);
+  if (return_code != 0) {
+    printf("Couldn't chdir into <%s>.\n", path);
+    printf("Error code = %d.\n", errno);
+    exit(errno);
+  }
+  
+  DIR* dir = opendir(".");
+  
+  struct dirent *directory_entry = readdir(dir);
+  while (directory_entry != NULL) {
+    if (not_dot_file(directory_entry->d_name)) {
+      process_path(directory_entry->d_name);
+    }
+    directory_entry = readdir(dir);
+  }
+  
+  return_code = chdir("..");
+  if (return_code != 0) {
+    printf("Couldn't chdir into <%s>.\n", path);
+    printf("Error code = %d.\n", errno);
+    exit(errno);
+  }  
 }
 
 void process_file(const char* path) {
-  /*
-   * Update the number of regular files.
-   */
+  ++num_regular;
 }
 
 void process_path(const char* path) {
@@ -65,7 +107,6 @@ int main (int argc, char *argv[]) {
 
   process_path(argv[1]);
 
-  printf("Processed all the files from <%s>.\n", argv[1]);
   printf("There were %d directories.\n", num_dirs);
   printf("There were %d regular files.\n", num_regular);
 
