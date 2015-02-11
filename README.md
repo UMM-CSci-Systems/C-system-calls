@@ -197,7 +197,7 @@ files (non-directories) it finds. The output should look like:
 
     Processed all the files from </home/mcphee/pub/CSci3401/loads_o_files/>.
     There were 1112 directories.
-    There were 10002 regular files.
+    There were 10001 regular files.
 
 There is a test script in
 `summarize_tree/summarize_tree_test.sh` that will
