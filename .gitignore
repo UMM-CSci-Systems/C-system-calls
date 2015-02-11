@@ -15,3 +15,6 @@
 *.exe
 *.out
 *.app
+
+file_disemvowel/file_disemvowel.dSYM
+file_disemvowel/file_disemvowel
