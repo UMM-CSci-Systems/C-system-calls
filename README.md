@@ -429,7 +429,7 @@ whatever.
 An alternative to writing this in C is to use shell commands. 
 Here we'd recommend using `find` to do the traversal for you (its
 `-type` flag is probably useful), and let `wc` do the counting.
-If you find that `wc` gives you toowhite space you don't want, [you
+If you find that `wc` gives you white space you don't want, [you
 can use `xargs` to strip that off](http://stackoverflow.com/a/12973694).
 
 ------------------------------------------------------------------------
