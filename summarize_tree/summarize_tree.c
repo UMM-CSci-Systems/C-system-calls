@@ -8,6 +8,14 @@
 
 extern int errno;
 
+void check_for_path_error(int return_code, char* message, const char* path) {
+  if (return_code != 0) {
+    printf("%s <%s>.\n", message, path);
+    printf("Error code = %d.\n", errno);
+    exit(errno);
+  }
+}
+
 static int num_dirs, num_regular;
 
 bool is_dir(const char* path) {
@@ -20,11 +28,7 @@ bool is_dir(const char* path) {
    */
   struct stat *stat_buf = malloc(sizeof(struct stat));
   int return_code = stat(path, stat_buf);
-  if (return_code != 0) {
-    printf("Couldn't stat <%s>.\n", path);
-    printf("Error code = %d.\n", errno);
-    exit(errno);
-  }
+  check_for_path_error(return_code, "Couldn't stat", path);
   
   bool result = S_ISDIR(stat_buf->st_mode);
   
@@ -58,11 +62,7 @@ void process_directory(const char* path) {
   ++num_dirs;
   
   int return_code = chdir(path);
-  if (return_code != 0) {
-    printf("Couldn't chdir into <%s>.\n", path);
-    printf("Error code = %d.\n", errno);
-    exit(errno);
-  }
+  check_for_path_error(return_code, "Couldn't chdir into", path);
   
   DIR* dir = opendir(".");
   
@@ -75,11 +75,7 @@ void process_directory(const char* path) {
   }
   
   return_code = chdir("..");
-  if (return_code != 0) {
-    printf("Couldn't chdir into <%s>.\n", path);
-    printf("Error code = %d.\n", errno);
-    exit(errno);
-  }  
+  check_for_path_error(return_code, "Couldn't chdir into", "..");
 }
 
 void process_file(const char* path) {
