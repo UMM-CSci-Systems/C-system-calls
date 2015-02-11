@@ -197,7 +197,7 @@ files (non-directories) it finds. The output should look like:
 
     Processed all the files from </home/mcphee/pub/CSci3401/loads_o_files/>.
     There were 1112 directories.
-    There were 10002 regular files.
+    There were 10001 regular files.
 
 There is a test script in
 `summarize_tree/summarize_tree_test.sh` that will
@@ -238,6 +238,11 @@ bool is_dir(const char* path) {
      * S_ISDIR to see if the file is a directory. Make sure you check the
      * return value from stat in case there is a problem, e.g., maybe the
      * the file doesn't actually exist. 
+     *
+     * You'll need to allocate memory for a buffer you pass to stat(); make
+     * sure you free up that space before you return from this function or
+     * you'll have a substantial memory leak (think of how many times this
+     * will be called!).
      */
 }
 
@@ -288,7 +293,6 @@ int main (int argc, char *argv[]) {
 
     process_path(argv[1]);
 
-    printf("Processed all the files from <%s>.\n", argv[1]);
     printf("There were %d directories.\n", num_dirs); 
     printf("There were %d regular files.\n", num_regular);
 
@@ -399,10 +403,12 @@ static int callback(const char *fpath, const struct stat *sb, int typeflag) {
     // Define stuff here 
 }
 
+#define MAX_FTW_DEPTH 16
+
 int main(int argc, char** argv) { 
     // Check arguments and set things up
 
-    ftw(argv[1], callback, 16);
+    ftw(argv[1], callback, MAX_FTW_DEPTH);
 
     // Print out the results 
 }
@@ -423,6 +429,8 @@ whatever.
 An alternative to writing this in C is to use shell commands. 
 Here we'd recommend using `find` to do the traversal for you (its
 `-type` flag is probably useful), and let `wc` do the counting.
+If you find that `wc` gives you white space you don't want, [you
+can use `xargs` to strip that off](http://stackoverflow.com/a/12973694).
 
 ------------------------------------------------------------------------
 
