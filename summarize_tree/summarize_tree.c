@@ -5,8 +5,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <string.h>
-
-extern int errno;
+#include <errno.h>
 
 void check_for_path_error(int return_code, char* message, const char* path) {
   if (return_code != 0) {

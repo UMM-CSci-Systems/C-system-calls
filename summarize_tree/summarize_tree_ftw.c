@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include <ftw.h>
-
-extern int errno;
 
 static int num_dirs, num_regular;
 
