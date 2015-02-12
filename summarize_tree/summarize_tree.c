@@ -65,7 +65,6 @@ int main (int argc, char *argv[]) {
 
   process_path(argv[1]);
 
-  printf("Processed all the files from <%s>.\n", argv[1]);
   printf("There were %d directories.\n", num_dirs);
   printf("There were %d regular files.\n", num_regular);
 
