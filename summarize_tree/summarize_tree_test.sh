@@ -3,70 +3,70 @@
 testDataDir=`mktemp -d /tmp/summarize_tree_data.XXXXX`
 outputFile=`mktemp /tmp/summarize_tree_output.XXXXX`
 
-tar -zxf ../test/summarize_tree/test_data.tgz -C $testDataDir
+tar -zxf ../test_data/summarize_tree/test_data.tgz -C $testDataDir
 
 testCVersionUsingStatOnSmallDirectory()
 {
     rm $outputFile
     ./summarize_tree $testDataDir/test_data/fewer_files/ > $outputFile
-    diff ../test/summarize_tree/small_dir_sizes $outputFile
-    assertTrue "Incorrect output file, try 'diff ../test/summarize_tree/small_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
+    diff ../test_data/summarize_tree/small_dir_sizes $outputFile
+    assertTrue "Incorrect output file, try 'diff ../test_data/summarize_tree/small_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
 }
 
 testCVersionUsingStatOnLargeDirectory()
 {
     rm $outputFile
     ./summarize_tree $testDataDir/test_data/loads_o_files/ > $outputFile
-    diff ../test/summarize_tree/large_dir_sizes $outputFile
-    assertTrue "Incorrect output file, try 'diff ../test/summarize_tree/large_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
+    diff ../test_data/summarize_tree/large_dir_sizes $outputFile
+    assertTrue "Incorrect output file, try 'diff ../test_data/summarize_tree/large_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
 }
 
 testCVersionUsingFtwOnSmallDirectory()
 {
     rm $outputFile
     ./summarize_tree_ftw $testDataDir/test_data/fewer_files/ > $outputFile
-    diff ../test/summarize_tree/small_dir_sizes $outputFile
-    assertTrue "Incorrect output file, try 'diff ../test/summarize_tree/small_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
+    diff ../test_data/summarize_tree/small_dir_sizes $outputFile
+    assertTrue "Incorrect output file, try 'diff ../test_data/summarize_tree/small_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
 }
 
 testCVersionUsingFtwOnLargeDirectory()
 {
     rm $outputFile
     ./summarize_tree_ftw $testDataDir/test_data/loads_o_files/ > $outputFile
-    diff ../test/summarize_tree/large_dir_sizes $outputFile
-    assertTrue "Incorrect output file, try 'diff ../test/summarize_tree/large_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
+    diff ../test_data/summarize_tree/large_dir_sizes $outputFile
+    assertTrue "Incorrect output file, try 'diff ../test_data/summarize_tree/large_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
 }
 
 testBashVersionOnSmallDirectory()
 {
     rm $outputFile
     ./summarize_tree.sh $testDataDir/test_data/fewer_files/ > $outputFile
-    diff ../test/summarize_tree/small_dir_sizes $outputFile
-    assertTrue "Incorrect output file, try 'diff ../test/summarize_tree/small_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
+    diff ../test_data/summarize_tree/small_dir_sizes $outputFile
+    assertTrue "Incorrect output file, try 'diff ../test_data/summarize_tree/small_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
 }
 
 testBashVersionOnLargeDirectory()
 {
     rm $outputFile
     ./summarize_tree.sh $testDataDir/test_data/loads_o_files/ > $outputFile
-    diff ../test/summarize_tree/large_dir_sizes $outputFile
-    assertTrue "Incorrect output file, try 'diff ../test/summarize_tree/large_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
+    diff ../test_data/summarize_tree/large_dir_sizes $outputFile
+    assertTrue "Incorrect output file, try 'diff ../test_data/summarize_tree/large_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
 }
 
 testRubyVersionOnSmallDirectory()
 {
     rm $outputFile
     ./summarize_tree.rb $testDataDir/test_data/fewer_files/ > $outputFile
-    diff ../test/summarize_tree/small_dir_sizes $outputFile
-    assertTrue "Incorrect output file, try 'diff ../test/summarize_tree/small_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
+    diff ../test_data/summarize_tree/small_dir_sizes $outputFile
+    assertTrue "Incorrect output file, try 'diff ../test_data/summarize_tree/small_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
 }
 
 testRubyVersionOnLargeDirectory()
 {
     rm $outputFile
     ./summarize_tree.rb $testDataDir/test_data/loads_o_files/ > $outputFile
-    diff ../test/summarize_tree/large_dir_sizes $outputFile
-    assertTrue "Incorrect output file, try 'diff ../test/summarize_tree/large_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
+    diff ../test_data/summarize_tree/large_dir_sizes $outputFile
+    assertTrue "Incorrect output file, try 'diff ../test_data/summarize_tree/large_dir_sizes $outputFile' for more info" "[[ $? == 0 ]]"
 }
 
 # load shunit2 and run the tests.
