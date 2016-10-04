@@ -132,6 +132,7 @@ The basic structure of our solution is
 
 ```C
 #include <stdio.h>
+#include <stdbool.h>
 
 #define BUF_SIZE 1024
 
