@@ -57,7 +57,7 @@ following ways:
 ### Read from standard input, write to standard output
 
 ```bash
-> ./file_disemvowel
+$ ./file_disemvowel
 Some text
 consisting of 2 lines.
 ^D
@@ -69,13 +69,13 @@ Note that we can also use I/O redirection and pipes to modify standard
 input and standard output:
 
 ```bash
-> cat small_input
+$ cat small_input
 Vulcan once stood proud here,
 until he spewed his parts from his dirty mouth,
 shattering his body and the land alike.
 -- Thomas McPhee, 20 Jul 2010
-> ./file_disemvowel < small_input > /tmp/output
-> cat /tmp/output
+$ ./file_disemvowel < small_input > /tmp/output
+$ cat /tmp/output
 Vlcn nc std prd hr,
 ntl h spwd hs prts frm hs drty mth,
 shttrng hs bdy nd th lnd lk.
@@ -89,12 +89,12 @@ is interpreted as the name of the file to be disemvoweled. The output will
 then go to standard output.
 
 ```bash
-> cat small_input
+$ cat small_input
 Vulcan once stood proud here,
 until he spewed his parts from his dirty mouth,
 shattering his body and the land alike.
 -- Thomas McPhee, 20 Jul 2010
-> ./file_disemvowel small_input
+$ ./file_disemvowel small_input
 Vlcn nc std prd hr,
 ntl h spwd hs prts frm hs drty mth,
 shttrng hs bdy nd th lnd lk.
@@ -108,13 +108,13 @@ interpret the first as the input file and the second as the file where
 the output should be written.
 
 ```bash
-> cat small_input
+$ cat small_input
 Vulcan once stood proud here,
 until he spewed his parts from his dirty mouth,
 shattering his body and the land alike.
 -- Thomas McPhee, 20 Jul 2010
-> ./file_disemvowel small_input /tmp/output
-> cat /tmp/output
+$ ./file_disemvowel small_input /tmp/output
+$ cat /tmp/output
 Vlcn nc std prd hr,
 ntl h spwd hs prts frm hs drty mth,
 shttrng hs bdy nd th lnd lk.
