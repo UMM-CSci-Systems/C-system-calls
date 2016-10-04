@@ -23,7 +23,7 @@ from (C) programs. The first is revisiting an old friend (`disemvowel` from
 [a previous C Lab](https://github.com/UMM-CSci-Systems/C-programming-strings)), but this time
 we disemvowel entire files instead of single lines. The second is four
 different solutions to the problem of summarizing files; two
-solutions will be in C and one is in `bash`.
+solutions will be in C and one uses shell commands.
 
 # Getting started
 
@@ -207,7 +207,7 @@ line arguments won't actually be tested.
 # Summarizing directories
 
 Here's where we'll generate several different solutions to the same
-problem, two in C (using different system tools), and one in `bash`. 
+problem, two in C (using different system tools), and one using shell commands. 
 The problem we're solving in each case is to write a program
 that takes a single command line argument and looks at *every* file and
 directory from there down (in sub-directories, sub-sub-directories,
