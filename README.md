@@ -57,7 +57,7 @@ following ways:
 ### Read from standard input, write to standard output
 
 ```bash
-> ./file_disemvowel
+$ ./file_disemvowel
 Some text
 consisting of 2 lines.
 ^D
@@ -69,13 +69,13 @@ Note that we can also use I/O redirection and pipes to modify standard
 input and standard output:
 
 ```bash
-> cat small_input
+$ cat small_input
 Vulcan once stood proud here,
 until he spewed his parts from his dirty mouth,
 shattering his body and the land alike.
 -- Thomas McPhee, 20 Jul 2010
-> ./file_disemvowel < small_input > /tmp/output
-> cat /tmp/output
+$ ./file_disemvowel < small_input > /tmp/output
+$ cat /tmp/output
 Vlcn nc std prd hr,
 ntl h spwd hs prts frm hs drty mth,
 shttrng hs bdy nd th lnd lk.
@@ -89,12 +89,12 @@ is interpreted as the name of the file to be disemvoweled. The output will
 then go to standard output.
 
 ```bash
-> cat small_input
+$ cat small_input
 Vulcan once stood proud here,
 until he spewed his parts from his dirty mouth,
 shattering his body and the land alike.
 -- Thomas McPhee, 20 Jul 2010
-> ./file_disemvowel small_input
+$ ./file_disemvowel small_input
 Vlcn nc std prd hr,
 ntl h spwd hs prts frm hs drty mth,
 shttrng hs bdy nd th lnd lk.
@@ -108,13 +108,13 @@ interpret the first as the input file and the second as the file where
 the output should be written.
 
 ```bash
-> cat small_input
+$ cat small_input
 Vulcan once stood proud here,
 until he spewed his parts from his dirty mouth,
 shattering his body and the land alike.
 -- Thomas McPhee, 20 Jul 2010
-> ./file_disemvowel small_input /tmp/output
-> cat /tmp/output
+$ ./file_disemvowel small_input /tmp/output
+$ cat /tmp/output
 Vlcn nc std prd hr,
 ntl h spwd hs prts frm hs drty mth,
 shttrng hs bdy nd th lnd lk.
@@ -132,6 +132,7 @@ The basic structure of our solution is
 
 ```C
 #include <stdio.h>
+#include <stdbool.h>
 
 #define BUF_SIZE 1024
 
@@ -175,10 +176,10 @@ int main(int argc, char *argv[]) {
 
 A few comments:
 
--   We've used `#define` to create a named constant which I used for the
-    size of my two buffers in the function `disemvowel()`.
+-   We've used `#define` to create a named constant which we used for the
+    size of the two buffers in the function `disemvowel()`.
 -   Rather than using the very low-level I/O tools `open()`, `read()`,
-    and `write()`, I'm using the slightly higher level tools `fopen()`,
+    and `write()`, we recommend using the slightly higher level tools `fopen()`,
     `fread()`, and `fwrite()`, as they're more like what you'd actually
     use in a text-processing program like this. You'll want to look at
     the man pages for `fopen()`, `fread()`, and `fwrite()` for the
@@ -192,6 +193,14 @@ A few comments:
     done that you can start worrying about the command line arguments.
     There are lots of on-line resources for handling command line
     arguments in C, e.g., in the wikibook [A Little C Primer](http://en.wikibooks.org/wiki/A_Little_C_Primer/C_Command_Line_Arguments).
+
+:bangbang: Until you get the command line argument handling working, the 
+last two tests are likely to hang indefinitely waiting for you to close 
+standard input. Both those tests are marked as `skip` to prevent them
+from hanging when you first start the project. **You need to make sure
+to remove (or comment out) the `skip` lines when think you have command 
+line argument processing working.** Otherwise your handling of command 
+line arguments won't actually be tested.
 
 ---
 
