@@ -176,10 +176,10 @@ int main(int argc, char *argv[]) {
 
 A few comments:
 
--   We've used `#define` to create a named constant which I used for the
-    size of my two buffers in the function `disemvowel()`.
+-   We've used `#define` to create a named constant which we used for the
+    size of the two buffers in the function `disemvowel()`.
 -   Rather than using the very low-level I/O tools `open()`, `read()`,
-    and `write()`, I'm using the slightly higher level tools `fopen()`,
+    and `write()`, we recommend using the slightly higher level tools `fopen()`,
     `fread()`, and `fwrite()`, as they're more like what you'd actually
     use in a text-processing program like this. You'll want to look at
     the man pages for `fopen()`, `fread()`, and `fwrite()` for the
