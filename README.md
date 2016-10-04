@@ -15,19 +15,21 @@ several C programming concepts, including:
 -   Using `stat()`
 -   Using `struct`
 
-For comparison, we will also see how to use shell commands and Ruby to traverse directories.
+For comparison, we will also use shell commands to traverse directories.
 
 To accomplish these goals, you will work on solving two distinct
 problems, both of which illustrate how we interact with the file system
-from (C) programs. The first is revisiting an old friend (`disemvowel` from the C Lab), but this time
+from (C) programs. The first is revisiting an old friend (`disemvowel` from 
+[a previous C Lab](https://github.com/UMM-CSci-Systems/C-programming-strings)), but this time
 we disemvowel entire files instead of single lines. The second is four
 different solutions to the problem of summarizing files; two
-solutions will be in C, one in BASH, and one in Ruby.
+solutions will be in C and one is in `bash`.
 
 # Getting started
 
 You should start by having one member of your team fork this repo to get the
-starter code for all four projects. Then everyone on the team should make sure
+starter code for all the projects. They need to then add everyone else in
+their group as collaborators. Then everyone on the team should make sure
 that they can clone that forked repository.
 
 There are two directories in the repository, one for each of the two
@@ -36,13 +38,20 @@ listed below; there's no overwhelming reason that you need to do them in
 any particular order, however, and it would be far better to move on to
 the next one rather than get buried in one and not make any progress.
 
+---
+
 # File disemvowel
 
-This is an extension of the disemvoweling exercise from the initial C Lab. Here
+This is an extension of the disemvoweling exercise from [a previous C Lab](https://github.com/UMM-CSci-Systems/C-programming-strings). Here
 you should write a program that disemvowels an entire file, reading from
 standard input or a file specified on the command line, and writing to
-standard output or to a file specified on the command line. Your goal is
-to write a program `file_disemvowel` that can be called in all of the
+standard output or to a file specified on the command line.
+
+It's common for command line utilities to be very flexible in how they
+handle both input and output. This allows them to be easily used as both
+"stand alone" utilities, and as combined with other programs using things
+pipes. To illustrate what that looks like from a programmer's standpoint,
+you'll write a program `file_disemvowel` that can be called in all of the
 following ways:
 
 ### Read from standard input, write to standard output
@@ -50,7 +59,7 @@ following ways:
 ```bash
 > ./file_disemvowel
 Some text
-consisting of 2 lines. \
+consisting of 2 lines.
 ^D
 Sm txt 
 cnsstng f 2 lns.
@@ -76,7 +85,7 @@ shttrng hs bdy nd th lnd lk.
 ### Read from a file, write to standard output
 
 Your program should be able to take a single command line argument that
-is taken to be the name of the file to be disemvoweled. The output will
+is interpreted as the name of the file to be disemvoweled. The output will
 then go to standard output.
 
 ```bash
@@ -114,12 +123,13 @@ shttrng hs bdy nd th lnd lk.
 
 ### Test scripts and design suggestions
 
-The directory `file_disemvowel` has a test
-script and some test data. You want to start by trying to get
+The directory `file_disemvowel` has a `bats` test
+script (`file_disemvowel_test.bats`) and some test data. You want to start by trying to get
 those tests to pass at a minimum but, as always, we make no guarantees
 that those tests are in any way complete enough to ensure correctness.
 
 The basic structure of our solution is 
+
 ```C
 #include <stdio.h>
 
@@ -136,7 +146,7 @@ int copy_non_vowels(int num_chars, char* in_buf, char* out_buf) {
     /*
      * Copy all the non-vowels from in_buf to out_buf. 
      * num_chars indicates how many characters are in in_buf, 
-     * and this should return the number of non-vowels that
+     * and this function should return the number of non-vowels that
      * that were copied over.
      */
 }
@@ -154,7 +164,8 @@ int main(int argc, char *argv[]) {
     FILE *inputFile; 
     FILE *outputFile;
 
-    /* Code that processes the command line arguments and sets up inputFile and outputFile */
+    // Code that processes the command line arguments 
+    // and sets up inputFile and outputFile.
 
     disemvowel(inputFile, outputFile);
 
@@ -182,38 +193,38 @@ A few comments:
     There are lots of on-line resources for handling command line
     arguments in C, e.g., in the wikibook [A Little C Primer](http://en.wikibooks.org/wiki/A_Little_C_Primer/C_Command_Line_Arguments).
 
-------------------------------------------------------------------------
-------------------------------------------------------------------------
+---
 
 # Summarizing directories
 
-Here's where we'll generate four different solutions to the same
-problem, two in C (using different system tools), one in bash, and one
-using Ruby. The problem we're solving in each case is to write a program
+Here's where we'll generate several different solutions to the same
+problem, two in C (using different system tools), and one in `bash`. 
+The problem we're solving in each case is to write a program
 that takes a single command line argument and looks at *every* file and
 directory from there down (in sub-directories, sub-sub-directories,
 etc.) and summarizes how many directories it finds and how many regular
 files (non-directories) it finds. The output should look like:
 
-    Processed all the files from </home/mcphee/pub/CSci3401/loads_o_files/>.
+    Processed all the files from <test_data/loads_o_files/>.
     There were 1112 directories.
     There were 10001 regular files.
 
 There is a test script in
-`summarize_tree/summarize_tree_test.sh` that will
-only pass when all four programs exist and work using these names:
+`summarize_tree_test.bats` that will
+only pass when all three programs exist and work using these names:
 
 -   `summarize_tree`
 -   `summarize_tree_ftw`
 -   `summarize_tree.sh`
--   `summarize_tree.rb`
 
-The two files `small_dir_sizes` and `large_dir_sizes` in the repo are
-necessary for the tests to pass; you shouldn't remove or change them.
+The two files `test_data/small_dir_sizes` and `test_data/large_dir_sizes` 
+in the repo are necessary for the tests to pass; you shouldn't remove 
+or change them.
 
-------------------------------------------------------------------------
+Remember to also use `valgrind` to look for memory leaks in both your 
+C versions.
 
-### C using `stat()`
+## C using `stat()`
 
 We'll start with a "traditional" C solution using the `stat()` and
 `readdir()` library functions. We've given you a substantial stub for
@@ -300,7 +311,7 @@ int main (int argc, char *argv[]) {
 }
 ```
 
-#### Static variables as "fields"
+### Static variables as "fields"
 
 The `static int` declaration on line 9 gives us two semi-global
 variables that are visible to all the functions *in this file*, but
@@ -311,14 +322,16 @@ so there are never more than these two integer variables. (This means if
 you tried to use this approach for something like a stack, then you
 couldn't ever have more than one stack.)
 
-#### Calling stat()
+### Calling stat()
 
 In `is_dir()`, you'll want to use the `stat()` system call
 (try `man 2 stat`) to get the "status" of the file identified by `path`.
 The signature for `stat()` is 
+
 ```C
 int stat(const char *path, struct stat *buf);
 ```
+
 This is typical of many library
 functions where the "return value" is actually being written into a
 pointer argument (`buf` in this case), and what's returned is an error
@@ -341,20 +354,23 @@ which includes whether it's a directory or not. We could try to extract
 that information from `st_mode` directly, but they've given us a
 `S_ISDIR()` macro that does that work for us. Then the key expression is
 something like 
+
 ```C
 S_ISDIR(buf->st_mode)
 ```
+
 An important point about `stat()` is that *doesn't* allocate space for
 `buf`; you're supposed to have done that before you call `stat()`. You
 can do this with `malloc()`, or you can
 actually declare a `struct stat` locally (`struct stat buf`), and pass
 it's address to `stat()` with `&buf`. If you do that, `buf` isn't a
 pointer, so you don't need the arrow notation above and can just use
+
 ```C
 S_ISDIR(buf.st_mode)
 ```
 
-#### Reading directories
+### Reading directories
 
 In `process_directory` you'll need to have a loop that reads
 all the entries in the directory named by the given path, making
@@ -372,7 +388,7 @@ end. There are a few bits you need to be careful of:
     contains both those entires. You *don't* want to make recursive
     calls on those, because you'll end up in an infinite loop.
 
-#### Checking for errors
+### Checking for errors
 
 Since C tends to just crash horribly when something goes wrong, you want
 to get in the habit of checking for errors so you can try to give your
@@ -383,9 +399,7 @@ in `is_dir()`. You should also probably check for errors from things
 like `opendir()`, `readdir()`, `closedir()`, and `chdir()`, although
 errors there are less likely.
 
-------------------------------------------------------------------------
-
-### C using `ftw()`
+## C using `ftw()`
 
 Having gotten the version with `stat()` to work, we're now going to do
 this again, using a nice library tool called `ftw()` (for "file tree
@@ -393,11 +407,14 @@ walk" - really). Here you just need to call `ftw()` (which you can do straight
 from `main()` after checking the command line arguments), and it does
 all the recursive traversal of the file system for you. What you need to
 do is define a function 
+
 ```C
 static int callback(const char *fpath, const struct stat *sb, int typeflag)
 ```
+
 and pass it in as the second
 argument of `ftw()`, something like this: 
+
 ```C
 static int callback(const char *fpath, const struct stat *sb, int typeflag) { 
     // Define stuff here 
@@ -422,40 +439,10 @@ counter. In more general applications, however, you could check for file
 types (image files, for example), copy things, compute their sizes, or
 whatever.
 
-------------------------------------------------------------------------
-
-### The shell using find
+## The shell using `find`
 
 An alternative to writing this in C is to use shell commands. 
 Here we'd recommend using `find` to do the traversal for you (its
 `-type` flag is probably useful), and let `wc` do the counting.
 If you find that `wc` gives you white space you don't want, [you
 can use `xargs` to strip that off](http://stackoverflow.com/a/12973694).
-
-------------------------------------------------------------------------
-
-### Ruby
-
-Lastly, we'll solve this problem a fourth time, using Ruby.
-Conveniently, Ruby has a `Find` library that gives you file directory
-traversal (similar to the command line `find`) and a `FileTest` class
-with static methods like `directory?` that tell you if a file is a
-directory or not.
-
-The following little script, for example, will print out all the
-executable files in or below a specified directory:
-```ruby
-#!/usr/bin/ruby
-
-require 'find'
-
-Find.find(ARGV[0]) do |path|
-  if FileTest.executable?(path)
-    puts path
-  end
-end
-```
-
----
-
-People who contributed to this lab write-up before it was moved to Github include Nic McPhee, Vincent Borchardt, and John McCall.
