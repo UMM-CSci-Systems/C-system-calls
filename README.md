@@ -233,6 +233,22 @@ or change them.
 Remember to also use `valgrind` to look for memory leaks in both your 
 C versions.
 
+:bangbang: **Before working on this you should expand the `test_data.tgz` 
+`tar` archive.** This contains large collections of test directories and
+files (over 10,000 files) that we keep compressed in the repository so
+we don't burden Github (and you) with pushing and pulling these large
+collections of files. So execute
+
+```bash
+cd test_data
+tar -zxf test_data.tgz
+```
+
+That should give you two directories: `loads_o_files` and `fewer_files`.
+The former is a large directory structure with thousands of files and
+directories. The latter is a smaller subset. The tests assume those 
+directories exist and won't pass unless they do.
+
 ## C using `stat()`
 
 We'll start with a "traditional" C solution using the `stat()` and
