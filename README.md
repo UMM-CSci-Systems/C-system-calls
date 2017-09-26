@@ -1,10 +1,22 @@
 # "Traversing Directories" starter
 
+* [Overview](#overview)
+* [Getting Started](#getting-started)
+* [File Disemvowel](#file-disemvowel)
+  * [Standard Input -> Standard Output](#read-from-standard-input-write-to-standard-output)
+  * [File -> Standard Output](#read-from-a-file-write-to-standard-output)
+  * [File -> File](#read-from-a-file-write-to-a-file)
+  * [Test scripts and design suggestions](test-scripts-and-design-suggestions)
+* [The problems](#the-problems)
+  * [Mergesort](#mergesort)
+  * [Array merge](#array-merge)
+* [Final Words](#final-words)
+
 # Overview
 
 This repository contains the starter code and tests for the "Traversing directories" lab. 
 The primary goal of this lab is to gain some experience with (Unix) (file) system calls in 
-C, and compare these to using the shell and Ruby.
+C, and compare these to using the shell.
 
 For this lab, you will need to have (or develop) some familiarity with
 several C programming concepts, including:
@@ -20,17 +32,12 @@ For comparison, we will also use shell commands to traverse directories.
 To accomplish these goals, you will work on solving two distinct
 problems, both of which illustrate how we interact with the file system
 from (C) programs. The first is revisiting an old friend (`disemvowel` from 
-[a previous C Lab](https://github.com/UMM-CSci-Systems/C-programming-strings)), but this time
-we disemvowel entire files instead of single lines. The second is four
+[a previous C Lab](https://classroom.github.com/g/iyIMueWx)), but this time
+we disemvowel entire files instead of single lines. The second is three
 different solutions to the problem of summarizing files; two
 solutions will be in C and one uses shell commands.
 
 # Getting started
-
-You should start by having one member of your team fork this repo to get the
-starter code for all the projects. They need to then add everyone else in
-their group as collaborators. Then everyone on the team should make sure
-that they can clone that forked repository.
 
 There are two directories in the repository, one for each of the two
 major parts of this lab. We would recommend doing them in the order
@@ -42,14 +49,14 @@ the next one rather than get buried in one and not make any progress.
 
 # File disemvowel
 
-This is an extension of the disemvoweling exercise from [a previous C Lab](https://github.com/UMM-CSci-Systems/C-programming-strings). Here
+This is an extension of the disemvoweling exercise from [a previous C Lab](https://classroom.github.com/g/iyIMueWx). Here
 you should write a program that disemvowels an entire file, reading from
 standard input or a file specified on the command line, and writing to
 standard output or to a file specified on the command line.
 
 It's common for command line utilities to be very flexible in how they
 handle both input and output. This allows them to be easily used as both
-"stand alone" utilities, and as combined with other programs using things
+"stand alone" utilities, and as combined with other programs using 
 pipes. To illustrate what that looks like from a programmer's standpoint,
 you'll write a program `file_disemvowel` that can be called in all of the
 following ways:
@@ -365,7 +372,7 @@ are stored in
 `buf`; if the error code is non-zero then there was a problem 
 (e.g., the file didn't actually exist) and you can't count on `buf`
 containing any meaningful information. What you get in `buf` is a whole
-bunch of information including the inode number, access and change
+bunch of information including the (inode)[https://en.wikipedia.org/wiki/Inode] number, access and change
 times, etc. (see the `man` page for more). What we care about is the
 `st_mode` field; to access that field you need to dereference the
 pointer (i.e., `*buf`) and then use the dot notation to access the
@@ -384,7 +391,7 @@ something like
 S_ISDIR(buf->st_mode)
 ```
 
-An important point about `stat()` is that *doesn't* allocate space for
+An important point about `stat()` is that the function *doesn't* allocate space for
 `buf`; you're supposed to have done that before you call `stat()`. You
 can do this with `malloc()`, or you can
 actually declare a `struct stat` locally (`struct stat buf`), and pass
