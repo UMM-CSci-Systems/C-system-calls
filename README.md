@@ -11,7 +11,7 @@
   * [C using `stat()`](#c-using-stat)
     * [Static variables as "fields"](#static-variables-as-fields)
     * [Calling `stat()`](#calling-stat)
-    * [Reading Directories](#reading-directores)
+    * [Reading Directories](#reading-directories)
     * [Checking for Errors](#checking-for-errors)
   * [C using `ftw()`](#c-using-ftw)
   * [The shell using `find`](#the-shell-using-find)
@@ -36,7 +36,7 @@ For comparison, we will also use shell commands to traverse directories.
 
 To accomplish these goals, you will work on solving two distinct
 problems, both of which illustrate how we interact with the file system
-from (C) programs. The first is revisiting an old friend (`disemvowel` from 
+from (C) programs. The first is revisiting an old friend (`dihttps://github.com/UMM-CSci-Systems/C-traversing-directories/blob/master/README.md#reading-directoriessemvowel` from 
 [a previous C Lab](https://classroom.github.com/g/iyIMueWx)), but this time
 we disemvowel entire files instead of single lines. The second is three
 different solutions to the problem of summarizing files; two
