@@ -485,3 +485,14 @@ If you find that `wc` gives you white space you don't want, [you
 can use `xargs` to strip that off](http://stackoverflow.com/a/12973694).
 
 # To Do
+
+The canvas rubric provides detailed information on how you will be graded.  The main topics revolve around
+
+- [ ] Create the four executable files:
+   - [ ] `dismvowel`
+   - [ ] `summarize_tree`
+   - [ ] `summarize_tree_ftw`
+   - [ ] `summarize_tree.sh`
+- [ ] Ensure that the programs pass their tests
+- [ ] Ensure that the C programs pass valgrind tests
+- [ ] Code and commits should be understandable and useful
