@@ -6,7 +6,7 @@
   * [Standard Input -> Standard Output](#read-from-standard-input-write-to-standard-output)
   * [File -> Standard Output](#read-from-a-file-write-to-standard-output)
   * [File -> File](#read-from-a-file-write-to-a-file)
-  * [Test scripts and design suggestions](test-scripts-and-design-suggestions)
+  * [Test scripts and design suggestions](#test-scripts-and-design-suggestions)
 * [Summarizing Directories](#summarizing-directories)
   * [C using `stat()`](#c-using-stat)
     * [Static variables as "fields"](static-variables-as-fields)
