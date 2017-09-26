@@ -7,10 +7,15 @@
   * [File -> Standard Output](#read-from-a-file-write-to-standard-output)
   * [File -> File](#read-from-a-file-write-to-a-file)
   * [Test scripts and design suggestions](test-scripts-and-design-suggestions)
-* [The problems](#the-problems)
-  * [Mergesort](#mergesort)
-  * [Array merge](#array-merge)
-* [Final Words](#final-words)
+* [Summarizing Directories](#summarizing-directories)
+  * [C using `stat()`](#c-using-stat)
+    * [Static variables as "fields"](static-variables-as-fields)
+    * [Calling `stat()`](calling-stat)
+    * [Reading Directories](reading-directores)
+    * [Checking for Errors](checking-for-errors)
+  * [C using `ftw()`](#c-using-ftw)
+  * [The shell using `find`](#the-shell-using-find)
+* [To do](#to-do)
 
 # Overview
 
@@ -354,7 +359,7 @@ so there are never more than these two integer variables. (This means if
 you tried to use this approach for something like a stack, then you
 couldn't ever have more than one stack.)
 
-### Calling stat()
+### Calling `stat()`
 
 In `is_dir()`, you'll want to use the `stat()` system call
 (try `man 2 stat`) to get the "status" of the file identified by `path`.
@@ -478,3 +483,5 @@ Here we'd recommend using `find` to do the traversal for you (its
 `-type` flag is probably useful), and let `wc` do the counting.
 If you find that `wc` gives you white space you don't want, [you
 can use `xargs` to strip that off](http://stackoverflow.com/a/12973694).
+
+# To Do
