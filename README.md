@@ -1,4 +1,4 @@
-# "Traversing Directories" starter
+# C System Calls
 
 * [Overview](#overview)
 * [Getting Started](#getting-started)
@@ -19,7 +19,7 @@
 
 # Overview
 
-This repository contains the starter code and tests for the "Traversing directories" lab. 
+This repository contains the starter code and tests for the "C system calls" lab. 
 The primary goal of this lab is to gain some experience with (Unix) (file) system calls in 
 C, and compare these to using the shell.
 
@@ -135,10 +135,17 @@ shttrng hs bdy nd th lnd lk.
 
 ### Test scripts and design suggestions
 
-The directory `file_disemvowel` has a `bats` test
+The directory `file_disemvowel/tests` has a `bats` test
 script (`file_disemvowel_test.bats`) and some test data. You want to start by trying to get
 those tests to pass at a minimum but, as always, we make no guarantees
-that those tests are in any way complete enough to ensure correctness.
+that those tests are in any way complete enough to ensure correctness. To
+run the tests enter
+
+```{bash}
+bats tests/file_disemvowel_test.bats
+```
+
+in the `file_disemvowel` directory.
 
 The basic structure of our solution is 
 
