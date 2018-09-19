@@ -19,13 +19,13 @@ teardown() {
 }
 
 @test "file_disemvowel runs successfully" {
-    run ./file_disemvowel < small_input > "$BATS_TMPDIR"/small_output
+    run ./file_disemvowel < tests/small_input > "$BATS_TMPDIR"/small_output
     [ "$status" -eq 0 ]
 }
 
 @test "file_disemvowel works with standard input and standard output" {
-    ./file_disemvowel < small_input > "$BATS_TMPDIR"/small_output
-    run diff -wbB small_output "$BATS_TMPDIR"/small_output
+    ./file_disemvowel < tests/small_input > "$BATS_TMPDIR"/small_output
+    run diff -wbB tests/small_output "$BATS_TMPDIR"/small_output
     [ "$status" -eq 0 ]
 }
 
@@ -35,8 +35,8 @@ teardown() {
 # handles command line arguments properly.
 @test "file_disemvowel works with specified input and standard output" {
     skip "Remove the 'skip' line in this test when you've implemented command line argument handling."
-    ./file_disemvowel small_input > "$BATS_TMPDIR"/small_output
-    run diff -wbB small_output "$BATS_TMPDIR"/small_output
+    ./file_disemvowel tests/small_input > "$BATS_TMPDIR"/small_output
+    run diff -wbB tests/small_output "$BATS_TMPDIR"/small_output
     [ "$status" -eq 0 ]
 }
 
@@ -52,7 +52,7 @@ teardown() {
 @test "file_disemvowel works with specified input and output files" {
     skip "Remove the 'skip' line in this test when you've implemented command line argument handling."
     rm -f "$BATS_TMPDIR"/small_output
-    ./file_disemvowel small_input "$BATS_TMPDIR"/small_output
-    run diff -wbB small_output "$BATS_TMPDIR"/small_output
+    ./file_disemvowel tests/small_input "$BATS_TMPDIR"/small_output
+    run diff -wbB tests/small_output "$BATS_TMPDIR"/small_output
     [ "$status" -eq 0 ]
 }
