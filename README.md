@@ -447,7 +447,7 @@ errors there are less likely.
 
 Having gotten the version with `stat()` to work, we're now going to do
 this again, using a nice library tool called `ftw()` (for "file tree
-walk" - really). Here you just need to call `ftw()` (which you can do straight
+walk"). Here you just need to call `ftw()` (which you can do straight
 from `main()` after checking the command line arguments), and it does
 all the recursive traversal of the file system for you. What you need to
 do is define a function 
