@@ -3,26 +3,26 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:0 orderedList:0 -->
 
 - [C System Calls](#c-system-calls)
-- [Overviews](#overviews)
+- [Overview](#overview)
 - [Getting started](#getting-started)
 - [File disemvowel](#file-disemvowel)
-	- [Read from standard input, write to standard output](#read-from-standard-input-write-to-standard-output)
-	- [Read from a file, write to standard output](#read-from-a-file-write-to-standard-output)
-	- [Read from a file, write to a file](#read-from-a-file-write-to-a-file)
-	- [Test scripts and design suggestions](#test-scripts-and-design-suggestions)
+  - [Read from standard input, write to standard output](#read-from-standard-input-write-to-standard-output)
+  - [Read from a file, write to standard output](#read-from-a-file-write-to-standard-output)
+  - [Read from a file, write to a file](#read-from-a-file-write-to-a-file)
+  - [Test scripts and design suggestions](#test-scripts-and-design-suggestions)
 - [Summarizing directories](#summarizing-directories)
-	- [C using `stat()`](#c-using-stat)
-		- [Static variables as "fields"](#static-variables-as-fields)
-		- [Calling `stat()`](#calling-stat)
-		- [Reading directories](#reading-directories)
-		- [Checking for errors](#checking-for-errors)
-	- [C using `ftw()`](#c-using-ftw)
-	- [The shell using `find`](#the-shell-using-find)
+  - [C using `stat()`](#c-using-stat)
+    - [Static variables as "fields"](#static-variables-as-fields)
+    - [Calling `stat()`](#calling-stat)
+    - [Reading directories](#reading-directories)
+    - [Checking for errors](#checking-for-errors)
+  - [C using `ftw()`](#c-using-ftw)
+  - [The shell using `find`](#the-shell-using-find)
 - [To Do](#to-do)
 
 <!-- /TOC -->
 
-# Overviews
+# Overview
 
 This repository contains the starter code and tests for the "C system calls" lab.
 The primary goal of this lab is to gain some experience with (Unix) (file) system calls in
@@ -46,6 +46,16 @@ from (C) programs. The first is revisiting an old friend from
 we disemvowel entire files instead of single lines. The second is three
 different solutions to the problem of summarizing files; two
 solutions will be in C and one uses shell commands.
+
+There's a lot here, and only some of it is described below. You will definitely
+need to do some reading on at least the following using your preferred resource(s):
+
+- C file I/O, including stdin, stdout, `fopen()`, `fwrite()`, `fclose()`
+- Command line arguments in C
+- C structs
+- C tools for processing directories, including `stat()`, `readdir()`, `chdir()`
+- Function pointers in C (that's a head trip)
+- The C `ftw()` (file tree walk) system call
 
 # Getting started
 
