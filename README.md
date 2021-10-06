@@ -327,10 +327,10 @@ bool is_dir(const char* path) {
 }
 
 /*
- * This is necessary this because the multiple recursion means there's no way to
+ * This is necessary this because the mutual recursion means there's no way to
  * order them so that all the functions are defined before they're called.
  */
-void process_path(const char**);
+void process_path(const char*);
 
 void process_directory(const char* path) {
     /*
@@ -362,7 +362,7 @@ void process_path(const char* path) {
 
 int main (int argc, char *argv[]) {
     // Ensure an argument was provided.
-    if (argc = 2) {
+    if (argc != 2) {
         printf ("Usage: %s <path>\n", argv[0]);
         printf ("       where <path> is the file or root of the tree you want to summarize.\n");
         return 1;
