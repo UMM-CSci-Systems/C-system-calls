@@ -2,6 +2,9 @@
 
 [![Disemvowel tests](../../workflows/file-disemvowel-tests/badge.svg)](../../actions?query=workflow%3A"file-disemvowel-tests")
 [![Disemvowel Valgrind](../../workflows/file-disemvowel-valgrind/badge.svg)](../../actions?query=workflow%3A"file-disemvowel-valgrind")
+[![Summarize Tree tests](../../workflows/summarize-tree-tests/badge.svg)](../../actions?query=workflow%3A"summarize-tree-tests")
+[![Summarize Tree Valgrind](../../workflows/summarize-tree-valgrind/badge.svg)](../../actions?query=workflow%3A"summarize-tree-valgrind")
+[![Summarize Tree FTW Valgrind](../../workflows/summarize-tree-ftw-valgrind/badge.svg)](../../actions?query=workflow%3A"summarize-tree-ftw-valgrind")
 
 - [Overview](#overview)
 - [Getting started](#getting-started)

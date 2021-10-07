@@ -9,6 +9,7 @@
         "disemvoweling",
         "disemvowels",
         "drty",
+        "exitcode",
         "fclose",
         "fopen",
         "fpath",
