@@ -1,41 +1,36 @@
-# C System Calls
+# C System Calls <!-- omit in toc -->
 
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:0 orderedList:0 -->
-
-- [C System Calls](#c-system-calls)
-- [Overviews](#overviews)
+- [Overview](#overview)
 - [Getting started](#getting-started)
 - [File disemvowel](#file-disemvowel)
-	- [Read from standard input, write to standard output](#read-from-standard-input-write-to-standard-output)
-	- [Read from a file, write to standard output](#read-from-a-file-write-to-standard-output)
-	- [Read from a file, write to a file](#read-from-a-file-write-to-a-file)
-	- [Test scripts and design suggestions](#test-scripts-and-design-suggestions)
+  - [Read from standard input, write to standard output](#read-from-standard-input-write-to-standard-output)
+  - [Read from a file, write to standard output](#read-from-a-file-write-to-standard-output)
+  - [Read from a file, write to a file](#read-from-a-file-write-to-a-file)
+  - [Test scripts and design suggestions](#test-scripts-and-design-suggestions)
 - [Summarizing directories](#summarizing-directories)
-	- [C using `stat()`](#c-using-stat)
-		- [Static variables as "fields"](#static-variables-as-fields)
-		- [Calling `stat()`](#calling-stat)
-		- [Reading directories](#reading-directories)
-		- [Checking for errors](#checking-for-errors)
-	- [C using `ftw()`](#c-using-ftw)
-	- [The shell using `find`](#the-shell-using-find)
+  - [C using `stat()`](#c-using-stat)
+    - [Static variables as "fields"](#static-variables-as-fields)
+    - [Calling `stat()`](#calling-stat)
+    - [Reading directories](#reading-directories)
+    - [Checking for errors](#checking-for-errors)
+  - [C using `ftw()`](#c-using-ftw)
+  - [The shell using `find`](#the-shell-using-find)
 - [To Do](#to-do)
 
-<!-- /TOC -->
-
-# Overviews
+## Overview
 
 This repository contains the starter code and tests for the "C system calls" lab.
-The primary goal of this lab is to gain some experience with (Unix) (file) system calls in
+The primary goal of this lab is to gain some experience with (Unix) file system calls in
 C, and compare these to using the shell.
 
 For this lab, you will need to have (or develop) some familiarity with
 several C programming concepts, including:
 
--   Using command line arguments
--   Using 2-Dimensional arrays
--   Basics of file-system calls, including standard input (`stdin`) and standard output (`stdout`)
--   Using `stat()`
--   Using `struct`
+- Using command line arguments
+- Using 2-Dimensional arrays
+- Basics of file-system calls, including standard input (`stdin`) and standard output (`stdout`)
+- Using `stat()`
+- Using `struct`
 
 For comparison, we will also use shell commands to traverse directories.
 
@@ -47,7 +42,17 @@ we disemvowel entire files instead of single lines. The second is three
 different solutions to the problem of summarizing files; two
 solutions will be in C and one uses shell commands.
 
-# Getting started
+There's a lot here, and only some of it is described below. You will definitely
+need to do some reading on at least the following using your preferred resource(s):
+
+- C file I/O, including stdin, stdout, `fopen()`, `fwrite()`, `fclose()`
+- Command line arguments in C
+- C structs
+- C tools for processing directories, including `stat()`, `readdir()`, `chdir()`
+- Function pointers in C (that's a head trip)
+- The C `ftw()` (file tree walk) system call
+
+## Getting started
 
 There are two directories in the repository, one for each of the two
 major parts of this lab. We would recommend doing them in the order
@@ -57,7 +62,7 @@ the next one rather than get buried in one and not make any progress.
 
 ---
 
-# File disemvowel
+## File disemvowel
 
 This is an extension of the disemvoweling exercise from [a previous C Lab](https://github.com/UMM-CSci-Systems/C-strings-and-memory-management#disemvowel). Here
 you should write a program that disemvowels an entire file, reading from
@@ -79,11 +84,11 @@ in `<stdio.h>`. Your code should probably set up your file I/O using `stdin`
 and `stdio` as the defaults, and then replace them with files specified by
 the user if/when the user provides them. You'll use `fopen()` to open files
 specified by the user, and you need to remember to use `fclose()` to close
-the files when you finish. (Failing to close can, for example, lead to some
+the files when you finish. (Failing to close can lead to some
 of the last data you wrote out not actually making it into the file, which
 can cause tests to fail.)
 
-## Read from standard input, write to standard output
+### Read from standard input, write to standard output
 
 ```bash
 $ ./file_disemvowel
@@ -111,7 +116,7 @@ shttrng hs bdy nd th lnd lk.
 -- Thms McPh, 20 Jl 2010
 ```
 
-## Read from a file, write to standard output
+### Read from a file, write to standard output
 
 Your program should be able to take a single command line argument that
 is interpreted as the name of the file to be disemvoweled. The output will
@@ -130,7 +135,7 @@ shttrng hs bdy nd th lnd lk.
 -- Thms McPh, 20 Jl 2010
 ```
 
-## Read from a file, write to a file
+### Read from a file, write to a file
 
 If your program is provided with two command line arguments, it should
 interpret the first as the input file and the second as the file where
@@ -150,7 +155,7 @@ shttrng hs bdy nd th lnd lk.
 -- Thms McPh, 20 Jl 2010
 ```
 
-## Test scripts and design suggestions
+### Test scripts and design suggestions
 
 The directory `file_disemvowel/tests` has a `bats` test
 script (`file_disemvowel_test.bats`) and some test data. You want to start by trying to get
@@ -164,7 +169,9 @@ bats tests/file_disemvowel_test.bats
 
 in the `file_disemvowel` directory.
 
-The basic structure of our solution is
+The basic structure of our solution is shown below. You should certainly feel
+free to copy code from your earlier lab to help as appropriate, but you may
+need to tweak things some to fit the new circumstances.
 
 ```C
 #include <stdio.h>
@@ -198,11 +205,11 @@ void disemvowel(FILE* inputFile, FILE* outputFile) {
 }
 
 int main(int argc, char *argv[]) {
-    // You should set these to `stdin` and `stdout` by default
-    // and then set them to user specified files when the user
+    // This sets these to `stdin` and `stdout` by default.
+    // You then need to set them to user specified files when the user
     // provides files names as command line arguments.
-    FILE *inputFile;
-    FILE *outputFile;
+    FILE *inputFile = stdin;
+    FILE *outputFile = stdout;
 
     // Code that processes the command line arguments
     // and sets up inputFile and outputFile.
@@ -215,16 +222,21 @@ int main(int argc, char *argv[]) {
 
 A few comments:
 
--   We've used `#define` to create a named constant which we used for the
-    size of the two buffers in the function `disemvowel()`.
--   Rather than using the very low-level I/O tools `open()`, `read()`,
+- We've used `#define` to create a named constant which we used for the
+    size of the two buffers in the function `disemvowel()`. The choice
+    of 1024 for the buffer size is largely arbitrary. You often see these
+    in multiples of a kilobyte. If you have a lot of RAM (which modern
+    machines typically do) you might slightly improve performance by
+    increasing this buffer size, but you'd be unlikely to be able to
+    tell the difference without careful measurements.
+- Rather than using the very low-level I/O tools `open()`, `read()`,
     and `write()`, we recommend using the slightly higher level tools `fopen()`,
     `fread()`, and `fwrite()`, as they're more like what you'd actually
     use in a text-processing program like this. You'll want to look at
     the man pages for `fopen()`, `fread()`, and `fwrite()` for the
     details, and definitely ask questions if you're not sure what's
     going on there.
--   This uses command line arguments in C. You probably want to start by
+- This uses command line arguments in C. You probably want to start by
     just reading standard input and writing to
     standard input, as that allows you to initially ignore the command
     line arguments and focus on the file operations; once you get that
@@ -241,11 +253,9 @@ to remove (or comment out) the `skip` lines when think you have command
 line argument processing working.** Otherwise your handling of command
 line arguments won't actually be tested.
 
----
+## Summarizing directories
 
-# Summarizing directories
-
-Here's where we'll generate several different solutions to the same
+Here we'll generate several different solutions to the same
 problem, two in C (using different system tools), and one using shell commands.
 The problem we're solving in each case is to write a program
 that takes a single command line argument and looks at *every* file and
@@ -253,17 +263,19 @@ directory from there down (in sub-directories, sub-sub-directories,
 etc.) and summarizes how many directories it finds and how many regular
 files (non-directories) it finds. The output should look like:
 
+```text
     Processed all the files from <test_data/loads_o_files/>.
     There were 1112 directories.
     There were 10001 regular files.
+```
 
 There is a test script in
 `summarize_tree_test.bats` that will
 only pass when all three programs exist and work using these names:
 
--   `summarize_tree`
--   `summarize_tree_ftw`
--   `summarize_tree.sh`
+- `summarize_tree`
+- `summarize_tree_ftw`
+- `summarize_tree.sh`
 
 The two files `test_data/small_dir_sizes` and `test_data/large_dir_sizes`
 in the repo are necessary for the tests to pass; you shouldn't remove
@@ -288,7 +300,7 @@ The former is a large directory structure with thousands of files and
 directories. The latter is a smaller subset. The tests assume those
 directories exist and won't pass unless they do.
 
-## C using `stat()`
+### C using `stat()`
 
 We'll start with a "traditional" C solution using the `stat()` and
 `readdir()` library functions. We've given you a substantial stub for
@@ -311,7 +323,7 @@ bool is_dir(const char* path) {
      * Use the stat() function (try "man 2 stat") to determine if the file
      * referenced by path is a directory or not. Call stat, and then use
      * S_ISDIR to see if the file is a directory. Make sure you check the
-     * return value from stat in case there is a problem, e.g., maybe the
+     * return value from stat() in case there is a problem, e.g., maybe the
      * the file doesn't actually exist.
      *
      * You'll need to allocate memory for a buffer you pass to stat(); make
@@ -322,10 +334,10 @@ bool is_dir(const char* path) {
 }
 
 /*
- * This is necessary this because the multiple recursion means there's no way to
+ * This is necessary this because the mutual recursion means there's no way to
  * order them so that all the functions are defined before they're called.
  */
-void process_path(const char**);
+void process_path(const char*);
 
 void process_directory(const char* path) {
     /*
@@ -344,6 +356,7 @@ void process_directory(const char* path) {
 void process_file(const char* path) {
     /*
      * Update the number of regular files.
+     * This is as simple as it seems. :-)
      */
 }
 
@@ -357,7 +370,7 @@ void process_path(const char* path) {
 
 int main (int argc, char *argv[]) {
     // Ensure an argument was provided.
-    if (argc = 2) {
+    if (argc != 2) {
         printf ("Usage: %s <path>\n", argv[0]);
         printf ("       where <path> is the file or root of the tree you want to summarize.\n");
         return 1;
@@ -375,7 +388,7 @@ int main (int argc, char *argv[]) {
 }
 ```
 
-### Static variables as "fields"
+#### Static variables as "fields"
 
 The `static int` declaration on line 9 gives us two semi-global
 variables that are visible to all the functions *in this file*, but
@@ -386,7 +399,7 @@ so there are never more than these two integer variables. (This means if
 you tried to use this approach for something like a stack, then you
 couldn't ever have more than one stack.)
 
-### Calling `stat()`
+#### Calling `stat()`
 
 In `is_dir()`, you'll want to use the `stat()` system call
 (try `man 2 stat`) to get the "status" of the file identified by `path`.
@@ -403,15 +416,19 @@ code. If the error code is 0, then `stat` worked fine, and its results
 are stored in
 `buf`; if the error code is non-zero then there was a problem
 (e.g., the file didn't actually exist) and you can't count on `buf`
-containing any meaningful information. What you get in `buf` is a whole
+containing any meaningful information.
+
+When it succeeds, what you get in `buf` is a whole
 bunch of information including the [inode](https://en.wikipedia.org/wiki/Inode) number, access and change
 times, etc. (see the `man` page for more). What we care about is the
 `st_mode` field; to access that field you need to dereference the
 pointer (i.e., `*buf`) and then use the dot notation to access the
-field: `(*buf).st_mode`. This syntax is sufficiently awkward (the parens
-are necessary because dot binds more tightly than star), that the
-designers of C provided an alternative syntax for this common case:
-`buf->st_mode`.
+field: `(*buf).st_mode`. (The parens
+are necessary because dot `.` binds more tightly than star `*`.)
+This syntax is sufficiently awkward that the
+designers of C provided an alternative syntax for this common case
+that allows us to use `x->y` instead of `(*x).y`. In our case that
+means we can use `buf->st_mode` instead of `(*buf).st_mode`.
 
 This `st_mode` field contains all the file permission information,
 which includes whether it's a directory or not. We could try to extract
@@ -434,7 +451,7 @@ pointer, so you don't need the arrow notation above and can just use
 S_ISDIR(buf.st_mode)
 ```
 
-### Reading directories
+#### Reading directories
 
 In `process_directory` you'll need to have a loop that reads
 all the entries in the directory named by the given path, making
@@ -443,16 +460,16 @@ recursive calls to process those sub-paths. The basic approach is to use
 the next entry from the directory, and then call `closedir()` at the
 end. There are a few bits you need to be careful of:
 
--   You need use `chdir()` at the start of `process_directory()` to
+- You need use `chdir()` at the start of `process_directory()` to
     actually move into the directory you're processing. You'll then to
     use `chdir("..")` to move back up to the parent directory at the end
     of `process_directory()`.
--   You need to check whether `readdir()` gave you either "." or ".." as
+- You need to check whether `readdir()` gave you either "." or ".." as
     the `d_name`. It will eventually do that since every directory
     contains both those entires. You *don't* want to make recursive
     calls on those, because you'll end up in an infinite loop.
 
-### Checking for errors
+#### Checking for errors
 
 Since C tends to just crash horribly when something goes wrong, you want
 to get in the habit of checking for errors so you can try to give your
@@ -463,7 +480,11 @@ in `is_dir()`. You should also probably check for errors from things
 like `opendir()`, `readdir()`, `closedir()`, and `chdir()`, although
 errors there are less likely.
 
-## C using `ftw()`
+There is [a nice C function `perror()`](https://www.tutorialspoint.com/c_standard_library/c_function_perror.htm)
+that will print out a somewhat
+human readable error when something goes wrong. You might find that useful.
+
+### C using `ftw()`
 
 Having gotten the version with `stat()` to work, we're now going to do
 this again, using a nice library tool called `ftw()` (for "file tree
@@ -498,12 +519,12 @@ int main(int argc, char** argv) {
 `ftw()` will call your `callback()` function once for every file it
 finds, giving you the opportunity to do whatever you wish with that
 file. In our case we just determine whether it's a directory or not (the
-`typeflag` field is very useful here) and update the appropriate
+`typeflag` parameter is very useful here) and update the appropriate
 counter. In more general applications, however, you could check for file
 types (image files, for example), copy things, compute their sizes, or
 whatever.
 
-## The shell using `find`
+### The shell using `find`
 
 An alternative to writing this in C is to use shell commands.
 Here we'd recommend using `find` to do the traversal for you (its
@@ -511,15 +532,15 @@ Here we'd recommend using `find` to do the traversal for you (its
 If you find that `wc` gives you white space you don't want, [you
 can use `xargs` to strip that off](http://stackoverflow.com/a/12973694).
 
-# To Do
+## To Do
 
 The canvas rubric provides detailed information on how you will be graded.  The main topics revolve around
 
 - [ ] Create the four executable files:
-   - [ ] `dismvowel`
-   - [ ] `summarize_tree`
-   - [ ] `summarize_tree_ftw`
-   - [ ] `summarize_tree.sh`
+  - [ ] `disemvowel`
+  - [ ] `summarize_tree`
+  - [ ] `summarize_tree_ftw`
+  - [ ] `summarize_tree.sh`
 - [ ] Ensure that the programs pass their tests
 - [ ] Ensure that the C programs pass valgrind tests
 - [ ] Code and commits should be understandable and useful
