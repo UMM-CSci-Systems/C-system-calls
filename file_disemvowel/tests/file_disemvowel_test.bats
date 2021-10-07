@@ -29,6 +29,12 @@ teardown() {
     [ "$status" -eq 0 ]
 }
 
+@test "file_disemvowel works with large files stdin/stdout" {
+    ./file_disemvowel < tests/as_you_like_it.txt > "$BATS_TMPDIR"/as_you_like_it.output
+    run diff -wbB tests/as_you_like_it_disemvowelled.txt "$BATS_TMPDIR"/as_you_like_it.output
+    [ "$status" -eq 0 ]
+}
+
 # If this test hangs, you're probably trying to read from standard input
 # instead of from the file provided on the command line.
 # Hit ^D to terminate the program and check taht your program
@@ -56,3 +62,19 @@ teardown() {
     run diff -wbB tests/small_output "$BATS_TMPDIR"/small_output
     [ "$status" -eq 0 ]
 }
+
+# If this test hangs, you're probably trying to read from standard
+# input instead of from the file provided on the command line.
+# Hit ^D to terminate the program and check that your program
+# handles command line arguments properly.
+#
+# If this fails and it looks like you're printing out the result
+# of disemvoweling, then you may be writing to standard output
+# instead of to the file specified as a command line argument.
+@test "file_disemvowel works with large specified files" {
+    skip "Remove the 'skip' line in this test when you've implemented command line argument handling."
+    ./file_disemvowel tests/as_you_like_it.txt "$BATS_TMPDIR"/as_you_like_it.output
+    run diff -wbB tests/as_you_like_it_disemvowelled.txt "$BATS_TMPDIR"/as_you_like_it.output
+    [ "$status" -eq 0 ]
+}
+
