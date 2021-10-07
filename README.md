@@ -1,5 +1,8 @@
 # C System Calls <!-- omit in toc -->
 
+[![Disemvowel tests](../../workflows/file-disemvowel-tests/badge.svg)](../../actions?query=workflow%3A"file-disemvowel-tests")
+[![Disemvowel Valgrind](../../workflows/file-disemvowel-valgrind/badge.svg)](../../actions?query=workflow%3A"file-disemvowel-valgrind")
+
 - [Overview](#overview)
 - [Getting started](#getting-started)
 - [File disemvowel](#file-disemvowel)
