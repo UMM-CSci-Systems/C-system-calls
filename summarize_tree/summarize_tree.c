@@ -13,7 +13,7 @@ bool is_dir(const char* path) {
    * Use the stat() function (try "man 2 stat") to determine if the file
    * referenced by path is a directory or not.  Call stat, and then use
    * S_ISDIR to see if the file is a directory. Make sure you check the
-   * return value from stat in case there is a problem, e.g., maybe the
+   * return value from stat() in case there is a problem, e.g., maybe the
    * the file doesn't actually exist.
    */
 }
@@ -41,6 +41,7 @@ void process_directory(const char* path) {
 void process_file(const char* path) {
   /*
    * Update the number of regular files.
+   * This is as simple as it seems. :-)
    */
 }
 

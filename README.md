@@ -20,7 +20,7 @@
 ## Overview
 
 This repository contains the starter code and tests for the "C system calls" lab.
-The primary goal of this lab is to gain some experience with (Unix) (file) system calls in
+The primary goal of this lab is to gain some experience with (Unix) file system calls in
 C, and compare these to using the shell.
 
 For this lab, you will need to have (or develop) some familiarity with
@@ -84,7 +84,7 @@ in `<stdio.h>`. Your code should probably set up your file I/O using `stdin`
 and `stdio` as the defaults, and then replace them with files specified by
 the user if/when the user provides them. You'll use `fopen()` to open files
 specified by the user, and you need to remember to use `fclose()` to close
-the files when you finish. (Failing to close can, for example, lead to some
+the files when you finish. (Failing to close can lead to some
 of the last data you wrote out not actually making it into the file, which
 can cause tests to fail.)
 
@@ -169,7 +169,9 @@ bats tests/file_disemvowel_test.bats
 
 in the `file_disemvowel` directory.
 
-The basic structure of our solution is
+The basic structure of our solution is shown below. You should certainly feel
+free to copy code from your earlier lab to help as appropriate, but you may
+need to tweak things some to fit the new circumstances.
 
 ```C
 #include <stdio.h>
@@ -203,11 +205,11 @@ void disemvowel(FILE* inputFile, FILE* outputFile) {
 }
 
 int main(int argc, char *argv[]) {
-    // You should set these to `stdin` and `stdout` by default
-    // and then set them to user specified files when the user
+    // This sets these to `stdin` and `stdout` by default.
+    // You then need to set them to user specified files when the user
     // provides files names as command line arguments.
-    FILE *inputFile;
-    FILE *outputFile;
+    FILE *inputFile = stdin;
+    FILE *outputFile = stdout;
 
     // Code that processes the command line arguments
     // and sets up inputFile and outputFile.
@@ -221,7 +223,12 @@ int main(int argc, char *argv[]) {
 A few comments:
 
 - We've used `#define` to create a named constant which we used for the
-    size of the two buffers in the function `disemvowel()`.
+    size of the two buffers in the function `disemvowel()`. The choice
+    of 1024 for the buffer size is largely arbitrary. You often see these
+    in multiples of a kilobyte. If you have a lot of RAM (which modern
+    machines typically do) you might slightly improve performance by
+    increasing this buffer size, but you'd be unlikely to be able to
+    tell the difference without careful measurements.
 - Rather than using the very low-level I/O tools `open()`, `read()`,
     and `write()`, we recommend using the slightly higher level tools `fopen()`,
     `fread()`, and `fwrite()`, as they're more like what you'd actually
@@ -248,7 +255,7 @@ line arguments won't actually be tested.
 
 ## Summarizing directories
 
-Here's where we'll generate several different solutions to the same
+Here we'll generate several different solutions to the same
 problem, two in C (using different system tools), and one using shell commands.
 The problem we're solving in each case is to write a program
 that takes a single command line argument and looks at *every* file and
@@ -316,7 +323,7 @@ bool is_dir(const char* path) {
      * Use the stat() function (try "man 2 stat") to determine if the file
      * referenced by path is a directory or not. Call stat, and then use
      * S_ISDIR to see if the file is a directory. Make sure you check the
-     * return value from stat in case there is a problem, e.g., maybe the
+     * return value from stat() in case there is a problem, e.g., maybe the
      * the file doesn't actually exist.
      *
      * You'll need to allocate memory for a buffer you pass to stat(); make
@@ -349,6 +356,7 @@ void process_directory(const char* path) {
 void process_file(const char* path) {
     /*
      * Update the number of regular files.
+     * This is as simple as it seems. :-)
      */
 }
 
@@ -408,15 +416,19 @@ code. If the error code is 0, then `stat` worked fine, and its results
 are stored in
 `buf`; if the error code is non-zero then there was a problem
 (e.g., the file didn't actually exist) and you can't count on `buf`
-containing any meaningful information. What you get in `buf` is a whole
+containing any meaningful information.
+
+When it succeeds, what you get in `buf` is a whole
 bunch of information including the [inode](https://en.wikipedia.org/wiki/Inode) number, access and change
 times, etc. (see the `man` page for more). What we care about is the
 `st_mode` field; to access that field you need to dereference the
 pointer (i.e., `*buf`) and then use the dot notation to access the
-field: `(*buf).st_mode`. This syntax is sufficiently awkward (the parens
-are necessary because dot binds more tightly than star), that the
-designers of C provided an alternative syntax for this common case:
-`buf->st_mode`.
+field: `(*buf).st_mode`. (The parens
+are necessary because dot `.` binds more tightly than star `*`.)
+This syntax is sufficiently awkward that the
+designers of C provided an alternative syntax for this common case
+that allows us to use `x->y` instead of `(*x).y`. In our case that
+means we can use `buf->st_mode` instead of `(*buf).st_mode`.
 
 This `st_mode` field contains all the file permission information,
 which includes whether it's a directory or not. We could try to extract
@@ -468,6 +480,10 @@ in `is_dir()`. You should also probably check for errors from things
 like `opendir()`, `readdir()`, `closedir()`, and `chdir()`, although
 errors there are less likely.
 
+There is [a nice C function `perror()`](https://www.tutorialspoint.com/c_standard_library/c_function_perror.htm)
+that will print out a somewhat
+human readable error when something goes wrong. You might find that useful.
+
 ### C using `ftw()`
 
 Having gotten the version with `stat()` to work, we're now going to do
@@ -503,7 +519,7 @@ int main(int argc, char** argv) {
 `ftw()` will call your `callback()` function once for every file it
 finds, giving you the opportunity to do whatever you wish with that
 file. In our case we just determine whether it's a directory or not (the
-`typeflag` field is very useful here) and update the appropriate
+`typeflag` parameter is very useful here) and update the appropriate
 counter. In more general applications, however, you could check for file
 types (image files, for example), copy things, compute their sizes, or
 whatever.

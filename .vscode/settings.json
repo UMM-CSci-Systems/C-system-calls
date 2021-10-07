@@ -18,6 +18,7 @@
         "malloc",
         "opendir",
         "parens",
+        "perror",
         "Phee",
         "printf",
         "prts",
