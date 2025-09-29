@@ -37,7 +37,7 @@ teardown() {
 
 # If this test hangs, you're probably trying to read from standard input
 # instead of from the file provided on the command line.
-# Hit ^D to terminate the program and check taht your program
+# Hit ^D to terminate the program and check that your program
 # handles command line arguments properly.
 @test "file_disemvowel works with specified input and standard output" {
     skip "Remove the 'skip' line in this test when you've implemented command line argument handling."
