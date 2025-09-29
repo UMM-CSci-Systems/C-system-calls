@@ -252,8 +252,8 @@ A few comments:
     arguments in C, e.g., in the wikibook [A Little C Primer](http://en.wikibooks.org/wiki/A_Little_C_Primer/C_Command_Line_Arguments).
 
 :bangbang: Until you get the command line argument handling working, the
-last two tests are likely to hang indefinitely waiting for you to close
-standard input. Both those tests are marked as `skip` to prevent them
+last three tests are likely to hang indefinitely waiting for you to close
+standard input. Those tests are marked as `skip` to prevent them
 from hanging when you first start the project. **You need to make sure
 to remove (or comment out) the `skip` lines when think you have command
 line argument processing working.** Otherwise your handling of command
